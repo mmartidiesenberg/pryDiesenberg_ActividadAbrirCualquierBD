@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.OleDb;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static pryDiesenberg_ActividadAbrirCualquierBD.Base_de_Datos;
-using static pryDiesenberg_ActividadAbrirCualquierBD.Base_de_Datos.BaseDeDatos;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
@@ -22,7 +22,6 @@ namespace pryDiesenberg_ActividadAbrirCualquierBD
     public partial class frmPrincipal : Form
     {
         BaseDeDatos bd = new BaseDeDatos();
-
         public frmPrincipal()
         {
             InitializeComponent();
@@ -87,34 +86,28 @@ namespace pryDiesenberg_ActividadAbrirCualquierBD
             string archivo = Directory.GetFiles(carpeta, "*.*")
                 .FirstOrDefault(f => Path.GetFileNameWithoutExtension(f).Contains(nombre));
 
-            string ruta = archivo;
-            string cadena = ObtenerCadenaConexion(ruta);
+            if (archivo == null) return;
 
-            if (cadena == null)
-            {
-                MessageBox.Show("Formato no soportado");
-                return;
-            }
+            bd.Desconectar();
+            string cadena = ObtenerCadenaConexion(archivo); // acá se pasa el provider correcto
+            if (cadena == null) return;
 
             if (bd.Conectar(cadena))
-            {
                 CargarTablas();
-            }
             else
-            {
-                MessageBox.Show(bd.ERROR);
-            }
+                MessageBox.Show("Error: " + bd.ERROR);
         }
 
         private void cmbTablas_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cmbTablas.SelectedItem == null) return;
             string tabla = cmbTablas.SelectedItem.ToString();
-
             DataTable datos = bd.Consultar($"SELECT * FROM [{tabla}]");
-
             dgvDatos.DataSource = datos;
         }
     }
 
+        
 }
-    
+
+

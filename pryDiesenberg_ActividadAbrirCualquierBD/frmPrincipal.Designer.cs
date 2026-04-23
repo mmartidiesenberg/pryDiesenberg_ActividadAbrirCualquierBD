@@ -46,21 +46,25 @@
             // 
             // cmbTablas
             // 
+            this.cmbTablas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTablas.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbTablas.FormattingEnabled = true;
             this.cmbTablas.Location = new System.Drawing.Point(12, 152);
             this.cmbTablas.Name = "cmbTablas";
             this.cmbTablas.Size = new System.Drawing.Size(329, 23);
             this.cmbTablas.TabIndex = 2;
+            this.cmbTablas.SelectedIndexChanged += new System.EventHandler(this.cmbTablas_SelectedIndexChanged);
             // 
             // cmbBD
             // 
+            this.cmbBD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbBD.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbBD.FormattingEnabled = true;
             this.cmbBD.Location = new System.Drawing.Point(12, 53);
             this.cmbBD.Name = "cmbBD";
             this.cmbBD.Size = new System.Drawing.Size(329, 23);
             this.cmbBD.TabIndex = 3;
+            this.cmbBD.SelectedIndexChanged += new System.EventHandler(this.cmbBD_SelectedIndexChanged);
             // 
             // lblBD
             // 
