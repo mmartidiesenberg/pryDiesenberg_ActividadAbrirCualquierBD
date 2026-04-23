@@ -38,6 +38,7 @@
             // 
             // dgvDatos
             // 
+            this.dgvDatos.BackgroundColor = System.Drawing.Color.Lavender;
             this.dgvDatos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDatos.Location = new System.Drawing.Point(12, 215);
             this.dgvDatos.Name = "dgvDatos";
@@ -89,6 +90,7 @@
             // frmPrincipal
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.Thistle;
             this.ClientSize = new System.Drawing.Size(708, 520);
             this.Controls.Add(this.lblTabla);
             this.Controls.Add(this.lblBD);
