@@ -29,27 +29,7 @@ namespace pryDiesenberg_ActividadAbrirCualquierBD
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
-            string carpeta = Path.Combine(Application.StartupPath, "Datos");
-
-            if (!Directory.Exists(carpeta))
-                return;
-
-            var archivos = Directory.GetFiles(carpeta, "*.*")
-                .Where(f => f.EndsWith(".mdb") || f.EndsWith(".accdb"))
-                .ToArray();
-
-            cmbBD.Items.Clear();
-
-            foreach (var archivo in archivos)
-            {
-                string nombre = Path.GetFileNameWithoutExtension(archivo);
-
-                // sacar el número inicial (ej: 2_)
-                if (nombre.Contains("_"))
-                    nombre = nombre.Substring(nombre.IndexOf("_") + 1);
-
-                cmbBD.Items.Add(nombre);
-            }
+            
         }
 
         private void CargarTablas()
@@ -78,36 +58,46 @@ namespace pryDiesenberg_ActividadAbrirCualquierBD
 
             return null;
         }
-
-        private void cmbBD_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string nombre = cmbBD.SelectedItem.ToString();
-            string carpeta = Path.Combine(Application.StartupPath, "Datos");
-            string archivo = Directory.GetFiles(carpeta, "*.*")
-                .FirstOrDefault(f => Path.GetFileNameWithoutExtension(f).Contains(nombre));
-
-            if (archivo == null) return;
-
-            bd.Desconectar();
-            string cadena = ObtenerCadenaConexion(archivo); // acá se pasa el provider correcto
-            if (cadena == null) return;
-
-            if (bd.Conectar(cadena))
-                CargarTablas();
-            else
-                MessageBox.Show("Error: " + bd.ERROR);
-        }
-
         private void cmbTablas_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbTablas.SelectedItem == null) return;
             string tabla = cmbTablas.SelectedItem.ToString();
+
             DataTable datos = bd.Consultar($"SELECT * FROM [{tabla}]");
+
             dgvDatos.DataSource = datos;
         }
-    }
 
-        
+        private void btnAbrir_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            ofd.Filter = "Bases de datos (*.mdb;*.accdb)|*.mdb;*.accdb";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                string ruta = ofd.FileName;
+                string cadena = ObtenerCadenaConexion(ruta);
+
+                if (cadena == null)
+                {
+                    MessageBox.Show("Formato No Soportado");
+                    return;
+                }
+
+                if (bd.Conectar(cadena))
+                {
+                    cmbTablas.Items.Clear();
+                    dgvDatos.DataSource = null;
+                    CargarTablas();
+                }
+                else
+                {
+                    MessageBox.Show(bd.ERROR);
+                }
+            }
+            MessageBox.Show("Base de Datos seleccionada correctamente, ahora elija una tabla para mostrar sus datos.");
+        }
+    }
 }
 
 
