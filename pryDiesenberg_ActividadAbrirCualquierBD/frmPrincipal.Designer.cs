@@ -85,7 +85,7 @@
             this.btnAbrir.Name = "btnAbrir";
             this.btnAbrir.Size = new System.Drawing.Size(118, 34);
             this.btnAbrir.TabIndex = 7;
-            this.btnAbrir.Text = "Abrir";
+            this.btnAbrir.Text = "Seleccionar";
             this.btnAbrir.UseVisualStyleBackColor = true;
             this.btnAbrir.Click += new System.EventHandler(this.btnAbrir_Click);
             // 

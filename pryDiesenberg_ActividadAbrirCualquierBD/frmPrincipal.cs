@@ -69,35 +69,43 @@ namespace pryDiesenberg_ActividadAbrirCualquierBD
 
         private void btnAbrir_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-
-            ofd.Filter = "Bases de datos (*.mdb;*.accdb)|*.mdb;*.accdb";
-
-            if (ofd.ShowDialog() == DialogResult.OK)
+            using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                string ruta = ofd.FileName;
-                string cadena = ObtenerCadenaConexion(ruta);
+                ofd.Filter = "Bases de datos (*.mdb;*.accdb)|*.mdb;*.accdb";
 
-                if (cadena == null)
+                if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    MessageBox.Show("Formato No Soportado");
-                    return;
-                }
+                    string ruta = ofd.FileName;
+                    string cadena = ObtenerCadenaConexion(ruta);
 
-                if (bd.Conectar(cadena))
-                {
-                    cmbTablas.Items.Clear();
-                    dgvDatos.DataSource = null;
-                    CargarTablas();
+                    if (cadena == null)
+                    {
+                        MessageBox.Show("Formato No Soportado");
+                        return;
+                    }
+
+                    if (bd.Conectar(cadena))
+                    {
+                        cmbTablas.Items.Clear();
+                        dgvDatos.DataSource = null;
+                        CargarTablas();
+
+                        MessageBox.Show("Base de Datos seleccionada correctamente, ahora elija una tabla para mostrar sus datos.");
+                    }
+                    else
+                    {
+                        MessageBox.Show(bd.ERROR);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show(bd.ERROR);
+                    MessageBox.Show("No se seleccionó ninguna base de datos. Por favor, seleccione una para continuar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            MessageBox.Show("Base de Datos seleccionada correctamente, ahora elija una tabla para mostrar sus datos.");
         }
+
     }
 }
+
 
 
