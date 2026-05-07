@@ -13,10 +13,6 @@ using static pryDiesenberg_ActividadAbrirCualquierBD.Base_de_Datos;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
-
-
-
-
 namespace pryDiesenberg_ActividadAbrirCualquierBD
 {
     public partial class frmPrincipal : Form
@@ -72,6 +68,10 @@ namespace pryDiesenberg_ActividadAbrirCualquierBD
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Bases de datos (*.mdb;*.accdb)|*.mdb;*.accdb";
+                // Abrir directamente en la carpeta donde se ejecuta la app (en VS: bin\Debug)
+                ofd.InitialDirectory = Application.StartupPath;
+                ofd.RestoreDirectory = true;
+                ofd.Title = "Seleccionar base de datos";
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
